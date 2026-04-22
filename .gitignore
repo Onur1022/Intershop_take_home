@@ -1,0 +1,10 @@
+###########
+# enviroment    
+###########
+.venv/
+
+###########
+# customer data
+###########
+references/
+
