@@ -215,46 +215,6 @@ def save_documents(documents: list[tuple[str, dict]]) -> None:
     print(f"\nSaved {len(all_docs)} documents to ./{OUTPUT_DIR}/")
     print(f"Combined: ./{OUTPUT_DIR}/_all.json")
 
-
-# ── LangChain loader preview ──────────────────────────────────────────────────
-
-LANGCHAIN_SNIPPET = '''
-# ── Load into LangChain + ChromaDB ───────────────────────────────────────────
-# pip install langchain langchain-community chromadb openai
-
-import json
-from pathlib import Path
-from langchain.schema import Document
-from langchain_community.vectorstores import Chroma
-from langchain_openai import OpenAIEmbeddings   # or use HuggingFaceEmbeddings
-
-def load_reference_documents(folder: str = "references") -> list[Document]:
-    docs = []
-    for path in Path(folder).glob("*.json"):
-        if path.name == "_all.json":
-            continue
-        data = json.loads(path.read_text(encoding="utf-8"))
-        docs.append(Document(
-            page_content=data["page_content"],
-            metadata=data["metadata"],
-        ))
-    return docs
-
-docs = load_reference_documents()
-
-vectorstore = Chroma.from_documents(
-    documents=docs,
-    embedding=OpenAIEmbeddings(),
-    persist_directory="./chroma_db",
-)
-
-# Query example
-results = vectorstore.similarity_search("We want to sell in 20 countries", k=3)
-for r in results:
-    print(r.metadata["customer"], "—", r.page_content[:80])
-'''
-
-
 # ── Entry point ──────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
@@ -265,4 +225,3 @@ if __name__ == "__main__":
         print("Check the HTML manually and adjust the selectors in scrape_customers().")
     else:
         save_documents(documents)
-        print(LANGCHAIN_SNIPPET)

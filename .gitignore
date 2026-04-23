@@ -2,9 +2,18 @@
 # enviroment    
 ###########
 .venv/
+.env
+__pycache__/
 
 ###########
-# customer data
+# customer / buisness data
 ###########
 references/
+challenges.json
+
+
+###########
+# embeddings
+###########
+chroma_db/
 
