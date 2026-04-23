@@ -130,9 +130,12 @@ def get(path: str, params: dict | None = None) -> dict:
     except requests.ConnectionError:
         print(f"✗  Cannot connect to server at {SERVER}. Is uvicorn running?")
         sys.exit(1)
-    return r.json()
-
-
+    try:
+        return r.json()
+    except requests.exceptions.JSONDecodeError:
+        print(f"✗  Server returned status {r.status_code} with non-JSON body:")
+        print(r.text or "(empty response)")
+        sys.exit(1)
 # ── Commands ──────────────────────────────────────────────────────────────────
 
 def cmd_new(args):

@@ -16,6 +16,8 @@ Run:
 import json
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv(override=True)
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import JSONResponse
@@ -23,6 +25,7 @@ from pydantic import BaseModel
 
 import challenges as ch_module
 import rag as rag_module
+
 
 PRODUCTS_FILE = Path("products.txt")
 
@@ -154,8 +157,8 @@ def _call_azure_llm(challenge: str, products_text: str) -> str:
 
     endpoint   = os.getenv("AZURE_OPENAI_ENDPOINT")
     api_key    = os.getenv("AZURE_OPENAI_API_KEY")
-    deployment = os.getenv("AZURE_OPENAI_DEPLOYMENT", "gpt-4o")
-    api_version = os.getenv("AZURE_OPENAI_API_VERSION", "2024-02-01")
+    deployment = os.getenv("AZURE_OPENAI_DEPLOYMENT")
+    api_version = os.getenv("AZURE_OPENAI_API_VERSION")
 
     if not endpoint or not api_key:
         raise HTTPException(
@@ -167,9 +170,9 @@ def _call_azure_llm(challenge: str, products_text: str) -> str:
         )
 
     client = AzureOpenAI(
+        api_version=api_version,
         azure_endpoint=endpoint,
         api_key=api_key,
-        api_version=api_version,
     )
 
     prompt = f"""You are a sales advisor for Intershop Communications AG.
@@ -187,12 +190,20 @@ Explain in 2-3 sentences why each recommended product fits the challenge.
 Be specific and concise."""
 
     response = client.chat.completions.create(
+        messages=[
+            {
+                "role": "system",
+                "content": "You are a sales advisor for Intershop Communications AG. Use only the given context",
+            },
+            {
+                "role": "user",
+                "content": prompt,
+            },
+        ],
+        max_completion_tokens=16384,
         model=deployment,
-        messages=[{"role": "user", "content": prompt}],
-        max_tokens=400,
-        temperature=0.3,
     )
-
+ 
     return response.choices[0].message.content.strip()
 
 
