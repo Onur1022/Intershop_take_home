@@ -8,7 +8,7 @@ Install:
     pip install requests beautifulsoup4
 
 Run:
-    python populate_products.py
+    python scraper_products.py
 """
 
 import re

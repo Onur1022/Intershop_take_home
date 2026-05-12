@@ -8,7 +8,7 @@ Install:
     pip install requests beautifulsoup4
 
 Run:
-    python scrape_references.py
+    python scraper.py
 
 Output:
     ./references/<customer_slug>.json  (one file per company)
