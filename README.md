@@ -85,9 +85,9 @@ Alle anderen Endpunkte funktionieren ohne diese Konfiguration.
 
 This folder contains the following accompanying documents:
 
-**Dokumentation.pdf** – Explains what the program does, which technologies were used, and why they were chosen.
+**Dokumentation_EN.pdf** – Explains what the program does, which technologies were used, and why they were chosen.
 
-**Praesentation.pptx** – The presentation used during the job interview at Intershop. Visualizes the system architecture, technology stack, and how the system works.
+**Praesentation_EN.pptx** – The presentation used during the job interview at Intershop. Visualizes the system architecture, technology stack, and how the system works.
 
 **Testaufgabe.pdf** – The original task description on which this project is based. (in German)
 
